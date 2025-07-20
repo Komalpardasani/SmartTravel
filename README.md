@@ -11,13 +11,14 @@ SmartTravel is a powerful AI-integrated travel assistant built using Streamlit a
 
 ##  Features
 
-- ** Trip Planner:** Personalized itineraries based on interests, duration, and budget.
-- ** Expense Tracker:** Log, filter, and visualize trip expenses with pie charts and export options.
-- ** Real-Time Recommendations:** AI-powered suggestions based on location, mood, and time.
-- ** Translator + AI Chat:** Talk to AI in multiple languages with voice playback support.
-- ** Travel Safety:** Emergency contacts, scams to watch for, and local alerts powered by AI.
-- ** Packing Assistant:** AI-generated packing lists based on weather, gender, and destination.
-- ** Flight & Hotel Booking (Mock):** Seamlessly search and reserve flights and accommodations customized to your travel plans.
+- **Trip Planner:** Personalized itineraries based on interests, duration, and budget.
+- **Expense Tracker:** Log, filter, and visualize trip expenses with pie charts and export options.
+- **Real-Time Recommendations:** AI-powered suggestions based on location, mood, and time.
+- **Translator + AI Chat:** Talk to AI in multiple languages with voice playback support.
+- **Travel Safety:** Emergency contacts, scams to watch for, and local alerts powered by AI.
+- **Packing Assistant:** AI-generated packing lists based on weather, gender, and destination.
+- **Flight & Hotel Booking:** Seamlessly search and reserve flights and accommodations customized to your travel plans.
+
 
 ---
 
@@ -76,7 +77,7 @@ streamlit run main.py
 
 ---
 
-## 🧪 Tech Stack
+##  Tech Stack
 
 - **Framework:** Streamlit
 - **AI:** Google Generative AI (Gemini)
