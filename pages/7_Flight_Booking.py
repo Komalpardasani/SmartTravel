@@ -9,10 +9,55 @@ st.set_page_config(page_title="Flight Booking", layout="wide")
 # ──────────────── Custom Styling ──────────────── #
 st.markdown("""
     <style>
-        .flight-card {
-           background-color: #1e2f4d;
-           color: #fefefe;
-           border-left: 5px solid #0fa3b1;
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #c6e8f4;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
+        }
+
+        .block-container {
+            padding-top: 2rem;
+        }
+
+        .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+            color: var(--primary-color);
+        }
+
+        .stButton>button, .stDownloadButton button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .recommendation-card {
+           background-color: var(--card-bg);
+           color: var(--text-color);
+           border-left: 5px solid var(--primary-color);
            border-radius: 12px;
            padding: 16px;
            margin: 10px 0;
@@ -20,62 +65,51 @@ st.markdown("""
            font-size: 16px;
         }
 
-        .flight-card strong {
-            color: #0fa3b1;
+        .recommendation-card strong {
+            color: var(--primary-color);
         }
 
-        .header-main {
+        .header-crazy {
             font-size: 36px;
             font-weight: 800;
-            color: #0fa3b1;
+            color: var(--primary-color);
             margin-bottom: 0;
         }
 
-        .header-sub {
+        .header-tagline {
             font-size: 18px;
             font-weight: 400;
             color: #a9b8c1;
             margin-bottom: 2rem;
         }
 
-        .stButton>button {
-            background-color: #0fa3b1;
-            color: white;
-            font-weight: 600;
-            border-radius: 8px;
-        }
-
-        .stTextInput>div>input, .stNumberInput>div>input, .stDateInput input {
-            background-color: #1e2f4d;
-            color: #fefefe;
-        }
-            
         .stPageLink {
             padding: 12px 20px;
-            background-color: #1e2f4d;
+            background-color: var(--card-bg);
             border-radius: 10px;
             font-weight: 600;
-            color: #ffffff !important;
+            color: var(--text-color) !important;
             display: block;
             text-decoration: none !important;
             margin-bottom: 12px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-align: center;
         }
+
         .stPageLink span {
-            color: #ffffff !important;  /* Force inner text color */
+            color: var(--text-color) !important;
         }
 
         .stPageLink:hover {
-            background-color: #0fa3b1;
+            background-color: var(--primary-color);
             color: #ffffff !important;
             transform: scale(1.02);
         }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='header-main'>Flight Booking</div>", unsafe_allow_html=True)
-st.markdown("<div class='header-sub'>Find the best flights tailored to your trip</div>", unsafe_allow_html=True)
+st.markdown("<div class='header-crazy'>Flight Booking</div>", unsafe_allow_html=True)
+st.markdown("<div class='header-tagline'>Find the best flights tailored to your trip</div>", unsafe_allow_html=True)
 
 # --- Auth Check ---
 if "authentication_status" not in st.session_state or st.session_state["authentication_status"] != True:
@@ -123,8 +157,7 @@ Do NOT include disclaimers or real booking links. Just 3 fictional listings.
             flights = re.split(r"\n(?=\*\*)", response.strip())
             for i, flight in enumerate(flights):
                 if flight.strip():
-                    with st.container():
-                        st.markdown(f"<div class='flight-card'>{flight.strip()}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='recommendation-card'>{flight.strip()}</div>", unsafe_allow_html=True)
 
                     book_key = f"booked_{i}"
                     trigger_key = f"trigger_{i}"
@@ -171,8 +204,3 @@ with col2:
 with col3:
     st.page_link("pages/3_Recommendations.py", label="Recommendations")
     st.page_link("pages/2_Expense_Tracker.py", label="Expense Tracker")
-
-
-
-
-
