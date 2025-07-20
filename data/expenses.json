@@ -1,0 +1,25 @@
+{
+  "komal@gmail.com": [
+    {
+      "trip": "Manali",
+      "amount": 100.0,
+      "category": "Food",
+      "notes": "",
+      "date": "2025-07-14"
+    },
+    {
+      "trip": "Kyoto",
+      "amount": 100.0,
+      "category": "Food",
+      "notes": "",
+      "date": "2025-07-19"
+    },
+    {
+      "trip": "Kyoto",
+      "amount": 100.0,
+      "category": "Transport",
+      "notes": "",
+      "date": "2025-07-19"
+    }
+  ]
+}
