@@ -10,10 +10,34 @@ st.set_page_config(page_title="SmartTravel Expense Tracker", layout="wide")
 # ──────────────── Apply Custom Style ──────────────── #
 st.markdown("""
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
         body {
-            background-color: #111927;
-            color: #fefefe;
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
             font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #c6e8f4;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
         }
 
         .block-container {
@@ -21,41 +45,31 @@ st.markdown("""
         }
 
         .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
-            color: #0fa3b1;
+            color: var(--primary-color);
         }
 
-        .stButton>button {
-            background-color: #0fa3b1;
-            color: white;
-            font-weight: 600;
-            border-radius: 5px;
+        .stButton>button, .stDownloadButton button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 10px;
         }
 
         .stSelectbox>div>div, .stNumberInput>div>input, .stTextInput>div>input {
-            background-color: #1e2f4d !important;
-            color: #fefefe !important;
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
         }
 
         .stDataFrame, .stTable, .stMarkdown {
-            color: #fefefe;
+            color: var(--text-color);
         }
 
-        .css-1r6slb0 {
-            background-color: #1e2f4d !important;
-        }
-
-        .stDownloadButton button {
-            background-color: #0fa3b1;
-            color: white;
-            font-weight: bold;
-        }
-            
         .stPageLink {
             padding: 12px 20px;
-            background-color: #1e2f4d;
+            background-color: var(--card-bg);
             border-radius: 10px;
             font-weight: 600;
-            color: #ffffff !important;
+            color: var(--text-color) !important;
             display: block;
             text-decoration: none !important;
             margin-bottom: 12px;
@@ -63,11 +77,11 @@ st.markdown("""
             text-align: center;
         }
         .stPageLink span {
-            color: #ffffff !important;  /* Force inner text color */
+            color: var(--text-color) !important;
         }
 
         .stPageLink:hover {
-            background-color: #0fa3b1;
+            background-color: var(--primary-color);
             color: #ffffff !important;
             transform: scale(1.02);
         }

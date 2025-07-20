@@ -4,27 +4,61 @@ from utils.gemini_client import ask_gemini
 
 st.set_page_config(page_title="Chat & Translator", layout="wide")
 
-# ──────── Custom Styling ──────── #
+# ──────── Apply Custom Style ──────── #
 st.markdown("""
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #c6e8f4;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
+        }
+
+        .block-container {
+            padding-top: 2rem;
+        }
+
         .translator-header {
             font-size: 36px;
             font-weight: 800;
-            color: #0fa3b1;
+            color: var(--primary-color);
             margin-bottom: 0;
         }
 
         .translator-sub {
             font-size: 18px;
             font-weight: 400;
-            color: #a9b8c1;
+            color: var(--text-color);
             margin-bottom: 2rem;
         }
 
         .response-box {
-            background-color: #1e2f4d;
-            color: #fefefe;
-            border-left: 5px solid #0fa3b1;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border-left: 5px solid var(--card-border);
             border-radius: 12px;
             padding: 16px;
             margin: 10px 0;
@@ -32,31 +66,25 @@ st.markdown("""
             font-size: 16px;
         }
 
-        .stButton>button {
-            background-color: #0fa3b1;
-            color: white;
-            font-weight: 600;
-            border-radius: 8px;
-        }
-
-        .stTextArea textarea {
-            background-color: #1e2f4d;
-            color: #fefefe;
+        .stButton>button, .stDownloadButton button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            font-weight: bold;
             border-radius: 10px;
         }
 
-        .stSelectbox div[data-baseweb="select"] {
-            background-color: #1e2f4d;
-            color: #fefefe;
+        .stSelectbox>div>div, .stTextArea textarea {
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
             border-radius: 10px;
         }
-        
+
         .stPageLink {
             padding: 12px 20px;
-            background-color: #1e2f4d;
+            background-color: var(--card-bg);
             border-radius: 10px;
             font-weight: 600;
-            color: #ffffff !important;
+            color: var(--text-color) !important;
             display: block;
             text-decoration: none !important;
             margin-bottom: 12px;
@@ -64,11 +92,11 @@ st.markdown("""
             text-align: center;
         }
         .stPageLink span {
-            color: #ffffff !important;  /* Force inner text color */
+            color: var(--text-color) !important;
         }
 
         .stPageLink:hover {
-            background-color: #0fa3b1;
+            background-color: var(--primary-color);
             color: #ffffff !important;
             transform: scale(1.02);
         }
@@ -121,7 +149,6 @@ if st.button("Translate & Chat"):
                 st.success("Reply generated!")
                 st.markdown(f"<div class='response-box'><strong>Assistant ({target_lang}):</strong><br>{response}</div>", unsafe_allow_html=True)
 
-                #  Auto speak once
                 components.html(f"""
                     <script>
                         var msg = new SpeechSynthesisUtterance({repr(response)});
@@ -150,25 +177,16 @@ st.markdown("### Navigate to Other Tools")
 
 col1, col2, col3 = st.columns(3)
 
-# Column 1 – Planning & Booking
 with col1:
     st.page_link("pages/1_Planner.py", label="Trip Planner")
     st.page_link("pages/7_Flight_Booking.py", label="Flight Booking")
     st.page_link("pages/8_Hotel_Booking.py", label="Hotel Booking")
 
-# Column 2 – Preparation & Safety
 with col2:
     st.page_link("pages/6_Packing_Assistant.py", label="AI Packing Assistant")
     st.page_link("pages/5_Safety.py", label="Emergency & Safety Tools")
     st.page_link("pages/4_Translator.py", label="AI Chat & Translator")
 
-# Column 3 – In-Trip Experience & Tracking
 with col3:
     st.page_link("pages/3_Recommendations.py", label="Recommendations")
     st.page_link("pages/2_Expense_Tracker.py", label="Expense Tracker")
-
-
-
-
-
-

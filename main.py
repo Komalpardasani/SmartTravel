@@ -27,12 +27,37 @@ if not st.session_state["authentication_status"]:
     """, unsafe_allow_html=True)
 
 # ──────────────── Custom Styling ──────────────── #
+
 st.markdown("""
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
         body {
-            background-color: #111927;
-            color: #fefefe;
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
             font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #f3f9fb;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
         }
 
         .block-container {
@@ -40,9 +65,9 @@ st.markdown("""
         }
 
         .custom-header {
-            font-size: 40px;
-            font-weight: 800;
-            color: #0fa3b1;
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary-color);
             margin-bottom: 0.2rem;
             animation: fadeSlide 1.2s ease-in-out;
         }
@@ -53,21 +78,22 @@ st.markdown("""
         }
 
         .custom-subheader {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 400;
             color: #a9b8c1;
         }
 
         .greeting-banner {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            color: #000000;
+            background: linear-gradient(to right, #e0f7fa, #e0f2f1);
+            padding: 24px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            color: #004d40;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
         }
 
         .greeting-banner h3 {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
         }
 
@@ -84,73 +110,73 @@ st.markdown("""
         }
 
         .card {
-            background-color: #1e2f4d;
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid #0fa3b1;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-            height: 260px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            height: 190px;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.5);
         }
 
         .card h4 {
-            margin-top: 0;
-            color: #0fa3b1;
+            color: var(--primary-color);
+            font-size: 20px;
         }
 
         .card p {
-            color: #fefefe;
+            color: var(--text-color);
             font-size: 15px;
         }
 
         .stButton button {
             width: 100%;
-            background-color: #0fa3b1 !important;
+            background-color: var(--primary-color) !important;
             color: white !important;
-            font-weight: 600 !important;
-            border-radius: 8px !important;
-            padding: 10px 0 !important;
+            font-weight: 700 !important;
+            border-radius: 10px !important;
+            padding: 12px 0 !important;
             margin-top: 8px;
         }
 
         .trip-history-box {
             background-color: #ffffff;
-            border: 3px solid #0fa3b1;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         .trip-history-box div {
             color: #1e2f4d;
         }
-        
+
         .stPageLinkButton button {
             width: 100%;
-            background-color: #0fa3b1 !important;
+            background-color: var(--primary-color) !important;
             color: white !important;
-            font-weight: 600 !important;
-            border-radius: 8px !important;
+            font-weight: 700 !important;
+            border-radius: 10px !important;
             padding: 10px 0 !important;
             margin-top: 12px !important;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .stPageLinkButton button:hover {
-            background-color: #0c7f8a !important;
-            transform: translateY(-2px);
+            background-color: #009fcc !important;
+            transform: translateY(-3px);
         }
 
     </style>
+            
 """, unsafe_allow_html=True)
+
 
 # ──────────────── Auth State ──────────────── #
 for key in ["username", "name"]:
@@ -232,8 +258,9 @@ if auth_status:
 
     show_logo_and_header()
     st.markdown("---")
-
-    st.image("travel.png", use_container_width=True)
+    col1, col2, col3 = st.columns([1, 2, 1])  # Adjust the ratio as needed
+    with col2:
+        st.image("travel.jpg", width=900)
 
     st.markdown("""
         <div class="greeting-banner">
