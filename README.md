@@ -85,5 +85,9 @@ streamlit run main.py
 - **Data:** JSON-based local storage
 - **Deployment:** Streamlit Community Cloud
 
+## Live Demo
+
+Access the app here: [https://smarttravel-qxkibvsg3kcfrom3hv37tx.streamlit.app/](https://smarttravel-qxkibvsg3kcfrom3hv37tx.streamlit.app/)
+
 
 
