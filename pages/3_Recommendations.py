@@ -4,12 +4,58 @@ from utils.gemini_client import ask_gemini
 
 st.set_page_config(page_title="Real-Time Recommendations", layout="wide")
 
+# ──────────────── Custom Styling ──────────────── #
 st.markdown("""
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #c6e8f4;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
+        }
+
+        .block-container {
+            padding-top: 2rem;
+        }
+
+        .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+            color: var(--primary-color);
+        }
+
+        .stButton>button, .stDownloadButton button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
         .recommendation-card {
-           background-color: #1e2f4d;
-           color: #fefefe;
-           border-left: 5px solid #0fa3b1;
+           background-color: var(--card-bg);
+           color: var(--text-color);
+           border-left: 5px solid var(--primary-color);
            border-radius: 12px;
            padding: 16px;
            margin: 10px 0;
@@ -18,38 +64,42 @@ st.markdown("""
         }
 
         .recommendation-card strong {
-            color: #0fa3b1;
+            color: var(--primary-color);
         }
+
         .header-crazy {
             font-size: 36px;
             font-weight: 800;
-            color: #0fa3b1;
+            color: var(--primary-color);
             margin-bottom: 0;
         }
+
         .header-tagline {
             font-size: 18px;
             font-weight: 400;
             color: #a9b8c1;
             margin-bottom: 2rem;
         }
+
         .stPageLink {
             padding: 12px 20px;
-            background-color: #1e2f4d;
+            background-color: var(--card-bg);
             border-radius: 10px;
             font-weight: 600;
-            color: #ffffff !important;
+            color: var(--text-color) !important;
             display: block;
             text-decoration: none !important;
             margin-bottom: 12px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-align: center;
         }
+
         .stPageLink span {
-            color: #ffffff !important;  /* Force inner text color */
+            color: var(--text-color) !important;
         }
 
         .stPageLink:hover {
-            background-color: #0fa3b1;
+            background-color: var(--primary-color);
             color: #ffffff !important;
             transform: scale(1.02);
         }
@@ -88,7 +138,7 @@ if submitted:
         A user is in **{city}**, the current local time is **{current_hour}**, and their mood is **{mood}**.
 
         Based on all 3 (location, time, mood), suggest **exactly 3** bold, fun, time-sensitive, *actionable* things they can do **right now** in {city}.
-        
+
         Include **real venue names**, local experiences, time-aware context (e.g., don’t suggest morning hikes at night).
 
         Mood guidance:

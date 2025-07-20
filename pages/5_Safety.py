@@ -3,140 +3,139 @@ from utils.gemini_client import ask_gemini
 
 st.set_page_config(page_title="Travel Safety & Emergency Info", layout="wide")
 
-# ──────── Enhanced Styling ──────── #
+# ──────────────── Custom Styling ──────────────── #
 st.markdown("""
     <style>
+        :root {
+            color-scheme: light dark;
+        }
+
         body {
-            background: linear-gradient(135deg, #0d1b2a, #1b263b);
-            color: #fefefe;
+            background-color: var(--background-color, #111927);
+            color: var(--text-color, #fefefe);
             font-family: 'Segoe UI', sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                --primary-color: #0fa3b1;
+                --text-color: #111927;
+                --background-color: #ffffff;
+                --card-bg: #c6e8f4;
+                --card-border: #0fa3b1;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                --primary-color: #00c6ff;
+                --text-color: #fefefe;
+                --background-color: #111927;
+                --card-bg: #1e2f4d;
+                --card-border: #00c6ff;
+            }
         }
 
         .block-container {
             padding-top: 2rem;
-            padding-bottom: 2rem;
+        }
+
+        .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+            color: var(--primary-color);
+        }
+
+        .stButton>button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .safety-card {
+           background-color: var(--card-bg);
+           color: var(--text-color);
+           border-left: 5px solid var(--primary-color);
+           border-radius: 12px;
+           padding: 16px;
+           margin: 10px 0;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+           font-size: 16px;
+        }
+
+        .safety-card strong {
+            color: var(--primary-color);
         }
 
         .header-main {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 800;
-            color: #0fa3b1;
-            margin-bottom: 0.3rem;
-            text-align: left;
+            color: var(--primary-color);
+            margin-bottom: 0;
         }
 
         .header-sub {
             font-size: 18px;
             font-weight: 400;
-            color: #ced4da;
-            margin-bottom: 2.5rem;
-            text-align: left;
-        }
-
-        .safety-card {
-            background-color: #1e2f4d;
-            color: #fefefe;
-            border-left: 5px solid #0fa3b1;
-            border-radius: 14px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: transform 0.3s ease;
-        }
-
-        .safety-card:hover {
-            transform: scale(1.02);
-        }
-
-        .safety-card strong {
-            color: #0fa3b1;
-        }
-
-        .stButton>button {
-            background-color: #0fa3b1;
-            color: white;
-            font-weight: 600;
-            border-radius: 10px;
-            padding: 0.5rem 1.2rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .stButton>button:hover {
-            background-color: #0c8791;
-            transform: scale(1.02);
-        }
-
-        .stTextInput>div>input {
-            background-color: #1e2f4d;
-            color: #fefefe;
-            border-radius: 8px;
-        }
-
-        .stTextInput>div>input::placeholder {
-            color: #9ca3af;
+            color: #a9b8c1;
+            margin-bottom: 2rem;
         }
 
         .stPageLink {
             padding: 12px 20px;
-            background-color: #1e2f4d;
+            background-color: var(--card-bg);
             border-radius: 10px;
             font-weight: 600;
-            color: #ffffff !important;
+            color: var(--text-color) !important;
             display: block;
             text-decoration: none !important;
             margin-bottom: 12px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-align: center;
         }
+
         .stPageLink span {
-            color: #ffffff !important;  /* Force inner text color */
+            color: var(--text-color) !important;
         }
 
         .stPageLink:hover {
-            background-color: #0fa3b1;
+            background-color: var(--primary-color);
             color: #ffffff !important;
             transform: scale(1.02);
         }
     </style>
 """, unsafe_allow_html=True)
 
-# ──────── Header ──────── #
+# ──────────────── Header ──────────────── #
 st.markdown("<div class='header-main'>Travel Safety & Emergency Assistant</div>", unsafe_allow_html=True)
 st.markdown("<div class='header-sub'>Get smart, up-to-date safety guidance and emergency help for your destination</div>", unsafe_allow_html=True)
 
-# ──────── Auth Check ──────── #
+# --- Auth check ---
 if "authentication_status" not in st.session_state or st.session_state["authentication_status"] != True:
     st.warning("Please log in from the home page to access this page.")
     st.stop()
 
 user = st.session_state.get("username", "unknown-user")
 
-# ──────── Input ──────── #
+# --- Input Form ---
 default_trip = st.session_state.get("current_trip", {})
-city = st.text_input("Enter your travel destination", default_trip.get("destination", ""), placeholder="e.g., Tokyo")
+with st.form("safety_form"):
+    city = st.text_input("Enter your travel destination", default_trip.get("destination", ""), placeholder="e.g., Tokyo")
+    submitted = st.form_submit_button("Get Safety Info")
 
-# ──────── Safety Info Fetch ──────── #
-if st.button("Get Safety Info"):
+# --- Fetch Safety Info ---
+if submitted:
     with st.spinner("Fetching safety recommendations..."):
         prompt = f"""
 I'm planning a trip to {city}.
 Please provide the most recent and location-specific safety and emergency information, including:
 
-1. The latest verified **emergency contact numbers** for:
-   - Police
-   - Ambulance
-   - Tourist helplines (if available)
+1. Emergency contact numbers (police, ambulance, tourist helplines)
+2. Dangerous areas to avoid (especially after dark)
+3. Recent travel safety alerts or scams
+4. Local police station addresses or numbers
+5. Any apps or websites for safety help
 
-2. Known **dangerous areas or neighborhoods** (especially after dark) that travelers should avoid, try providing specific location names in the city.
-
-3. **Recent travel safety alerts, local scams, or crime trends** relevant to tourists, and if possible, provide some particular locations to be more cautious.
-
-4. Addresses or phone numbers of **local police stations** or emergency services in that city. Provide a general contact number for the city, irrespective of local location.
-
-5. Any **local apps, hotlines, or government portals** available for safety or emergency support.
-
-Please ensure the data is current and location-specific. If something is uncertain, mention that it may vary or suggest checking with local authorities.
-Make the response well-structured and easy to scan quickly.
+Keep it concise, structured, and easy to scan.
 """
         try:
             response = ask_gemini(prompt)
@@ -145,25 +144,22 @@ Make the response well-structured and easy to scan quickly.
         except Exception as e:
             st.error(f"Error: {str(e)}")
 
-# ──────── Navigation Footer ──────── #
+# --- Navigation ---
 st.markdown("---")
 st.markdown("### Navigate to Other Tools")
 
 col1, col2, col3 = st.columns(3)
 
-# Column 1 – Planning & Booking
 with col1:
     st.page_link("pages/1_Planner.py", label="Trip Planner")
     st.page_link("pages/7_Flight_Booking.py", label="Flight Booking")
     st.page_link("pages/8_Hotel_Booking.py", label="Hotel Booking")
 
-# Column 2 – Preparation & Safety
 with col2:
     st.page_link("pages/6_Packing_Assistant.py", label="AI Packing Assistant")
     st.page_link("pages/5_Safety.py", label="Emergency & Safety Tools")
     st.page_link("pages/4_Translator.py", label="AI Chat & Translator")
 
-# Column 3 – In-Trip Experience & Tracking
 with col3:
     st.page_link("pages/3_Recommendations.py", label="Recommendations")
     st.page_link("pages/2_Expense_Tracker.py", label="Expense Tracker")
