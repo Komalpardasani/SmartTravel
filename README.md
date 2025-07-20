@@ -6,7 +6,7 @@ SmartTravel is a powerful AI-integrated travel assistant built using Streamlit a
 ---
 
 <p align="center">
-  <img src="logo.png" alt="SmartTravel Logo" width="160"/>
+  <img src="logo.png" alt="SmartTravel Logo"/>
 </p>
 
 ##  Features
