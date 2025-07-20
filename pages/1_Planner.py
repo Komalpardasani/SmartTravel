@@ -223,7 +223,8 @@ else:
 
 # ──────── Navigation ──────── #
 st.markdown("---")
-st.markdown("### Navigate to Other Tools")
+st.markdown("<h3 style='color: var(--primary-color);'>Navigate to Other Tools</h3>", unsafe_allow_html=True)
+
 
 col1, col2, col3 = st.columns(3)
 
