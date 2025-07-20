@@ -4,6 +4,9 @@ import os
 import json
 from PIL import Image
 from utils.auth_utils import register_user, authenticate_user
+import os
+os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
+
 
 st.set_page_config(page_title="SmartTravel Assistant", layout="wide")
 
