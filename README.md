@@ -89,5 +89,9 @@ streamlit run main.py
 
 Access the app here: [https://smarttravel-qxkibvsg3kcfrom3hv37tx.streamlit.app/](https://smarttravel-qxkibvsg3kcfrom3hv37tx.streamlit.app/)
 
+## YouTube Demo
+
+Watch the demo video here: [https://youtu.be/TWNdqTi61zM](https://youtu.be/TWNdqTi61zM)
+
 
 
